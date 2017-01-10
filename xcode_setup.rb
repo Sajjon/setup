@@ -4,6 +4,7 @@ require 'FileUtils'
 class Command
 	attr_accessor :name
 	attr_accessor :commands
+	attr_accessor :oneliner
 	attr_accessor :keys
 
 	def initialize (name, commands, keys)
