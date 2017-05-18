@@ -46,7 +46,7 @@ def delete_instr
 	[
 		'selectLine:',
 		'deleteBackward:',
-		'moveBackward:'
+		'moveToEndOfLine:'
 	]
 end
 
