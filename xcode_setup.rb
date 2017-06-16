@@ -1,7 +1,7 @@
 require 'plist'
 require 'FileUtils'
 
-class Command
+class XcodeCommand
 	attr_accessor :name
 	attr_accessor :commands
 	attr_accessor :oneliner
@@ -52,8 +52,8 @@ end
 
 def commands_array
 	[
-		Command.new(duplicate_name, duplicate_instr, duplicate_keys),
-		Command.new(delete_name, delete_instr, delete_keys)
+		XcodeCommand.new(duplicate_name, duplicate_instr, duplicate_keys),
+		XcodeCommand.new(delete_name, delete_instr, delete_keys)
 	]
 end
 
@@ -69,7 +69,8 @@ def customized_key_bindings
 end
 
 def possible_bindingds_plist_path
-	'/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Resources/IDETextKeyBindingSet.plist'
+	beta_path = @setup_for_beta ? '-beta' : ''
+	"/Applications/Xcode#{beta_path}.app/Contents/Frameworks/IDEKit.framework/Resources/IDETextKeyBindingSet.plist"
 end
 
 def used_bindings_plist_path
@@ -109,5 +110,6 @@ def set_keys(plist_path)
 	FileUtils.mv(plist_path_appended, plist_path)
 end
 
+@setup_for_beta = ARGV[0] == '--beta'		
 create_key_bindings(possible_bindingds_plist_path)
 set_keys(used_bindings_plist_path)
