@@ -9,7 +9,7 @@ class XcodeCommand
 
 	def initialize (name, commands, keys)
   	@name = name
-  	@commands = commands
+  	@commands = commands.map { |c| c << ':' }
   	@oneliner = commands.join(', ')
   	@keys = keys
 	end
@@ -25,12 +25,12 @@ end
 
 def duplicate_instr
 	[
-	'selectLine:',
-	'copy:',
-	'moveToEndOfLine:',
-	'insertNewline:',
-	'paste:',
-	'deleteBackward:'
+	'moveToBeginningOfLine',
+	'deleteToEndOfLine',
+	'yank',
+	'insertNewline',
+	'moveToBeginningOfLine',
+	'yank'
 	]
 end
 
@@ -44,9 +44,9 @@ end
 
 def delete_instr
 	[
-		'selectLine:',
-		'deleteBackward:',
-		'moveToEndOfLine:'
+		'selectLine',
+		'deleteBackward',
+		'moveToEndOfLine'
 	]
 end
 
@@ -68,7 +68,7 @@ def customized_key_bindings
 	}
 end
 
-def possible_bindingds_plist_path
+def possible_bindings_plist_path
 	beta_path = @setup_for_beta ? '-beta' : ''
 	"/Applications/Xcode#{beta_path}.app/Contents/Frameworks/IDEKit.framework/Resources/IDETextKeyBindingSet.plist"
 end
@@ -111,5 +111,5 @@ def set_keys(plist_path)
 end
 
 @setup_for_beta = ARGV[0] == '--beta'		
-create_key_bindings(possible_bindingds_plist_path)
+create_key_bindings(possible_bindings_plist_path)
 set_keys(used_bindings_plist_path)
